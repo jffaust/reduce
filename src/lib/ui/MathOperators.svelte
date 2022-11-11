@@ -26,7 +26,7 @@
 
 <style>
 	div {
-		margin: 2% auto;
+		margin: 5vh auto;
 		display: flex;
 		justify-content: space-around;
 	}

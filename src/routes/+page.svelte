@@ -198,12 +198,12 @@
 <style>
 	main {
 		text-align: center;
-		padding: 1em;
 		touch-action: none;
 	}
 
 	h1 {
-		color: #ff3e00;
+		color: #64748b;
+		font-family: sans-serif;
 		text-transform: uppercase;
 		font-size: 3em;
 		font-weight: 100;

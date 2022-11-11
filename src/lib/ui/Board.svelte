@@ -25,6 +25,7 @@
 <style>
 	table {
 		margin: 0 auto;
-		border-collapse: collapse;
+		border-spacing: 10px;
+		/* border-collapse: collapse; */
 	}
 </style>

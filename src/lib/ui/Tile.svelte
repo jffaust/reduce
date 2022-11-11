@@ -181,8 +181,11 @@
 
 <style>
 	td {
-		border: 3px solid darkgray;
+		font-size: xxx-large;
+		border-radius: 4px;
 		user-select: none;
+		background: #e2e8f0;
+		color: #64748b;
 	}
 	td.used {
 		background-color: lightgrey;

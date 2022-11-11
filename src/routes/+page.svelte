@@ -104,6 +104,7 @@
 	}
 
 	function handlePointerMove(e: PointerEvent) {
+		if (!layoutRefreshed) return;
 		if (dragging) {
 			let tilePos = Utils.getBoardPositionFromPointer(
 				boardOffsetPx,

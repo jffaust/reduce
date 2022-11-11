@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CTile from './Tile.svelte';
+	import Tile from './Tile.svelte';
 	import type { Board, Point2D } from '$lib/core/Common';
 	import type { Selection } from '$lib/core/Selection';
 
@@ -16,7 +16,7 @@
 	{#each board as row, y (y)}
 		<tr>
 			{#each row as tileValue, x (x)}
-				<CTile {boardOffsetPx} {tileSizePx} {selection} {tileValue} tileX={x} tileY={y} />
+				<Tile {boardOffsetPx} {tileSizePx} {selection} {tileValue} tileX={x} tileY={y} />
 			{/each}
 		</tr>
 	{/each}

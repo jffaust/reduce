@@ -6,6 +6,7 @@
 	import { Selection } from '$lib/core/Selection';
 	import { Utils } from '$lib/core/Utils';
 	import { Game } from '$lib/core/Game';
+	import { onMount } from 'svelte';
 
 	let dragging = false;
 	let previousPointerDragPos: Point2D | null = null;
@@ -13,6 +14,7 @@
 	let tileSizePx: number;
 	let boardSizePx: number;
 	let boardOffsetPx: Point2D;
+	let layoutRefreshed = false;
 
 	let game: Game;
 	let board: Board;
@@ -20,7 +22,7 @@
 	let cannotDivideReason = '';
 	let boardGenerator = new BoardGenerator(Date.now());
 
-	newRandomLevel();
+	onMount(newRandomLevel);
 
 	function newRandomLevel() {
 		game = new Game(boardGenerator.generate(5, 4, ['+', '-'], 0, 4)[0]);
@@ -98,6 +100,7 @@
 		};
 
 		boardOffsetPx = Utils.Difference(windowCenter, boardCenter);
+		layoutRefreshed = true;
 	}
 
 	function handlePointerMove(e: PointerEvent) {
@@ -185,8 +188,10 @@
 
 <main>
 	<h1 on:click={newRandomLevel}>REDUCE</h1>
-	<GameBoard {boardOffsetPx} {board} {selection} {boardSizePx} {tileSizePx} />
-	<MathOperators {boardOffsetPx} {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
+	{#if layoutRefreshed}
+		<GameBoard {boardOffsetPx} {board} {selection} {boardSizePx} {tileSizePx} />
+		<MathOperators {boardOffsetPx} {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
+	{/if}
 </main>
 
 <style>

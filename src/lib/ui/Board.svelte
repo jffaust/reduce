@@ -9,7 +9,7 @@
 	export let boardOffsetPx: Point2D;
 	export let selection: Selection;
 
-	$: tableStyle = `top: ${boardOffsetPx.y}px; left: ${boardOffsetPx.x}px; width: ${boardSizePx}px; height: ${boardSizePx}px;`;
+	$: tableStyle = `width: ${boardSizePx}px; height: ${boardSizePx}px;`;
 </script>
 
 <table style={tableStyle}>
@@ -24,7 +24,7 @@
 
 <style>
 	table {
-		position: fixed;
+		margin: 0 auto;
 		border-collapse: collapse;
 	}
 </style>

@@ -9,9 +9,7 @@
 	let divStyle: string;
 
 	$: {
-		divStyle = 'position: fixed;';
-		divStyle += `top: ${boardOffsetPx.y + boardSizePx + 50}px;`;
-		divStyle += `left: ${boardOffsetPx.x}px; width: ${boardSizePx}px;`;
+		divStyle = `width: ${boardSizePx}px;`;
 	}
 </script>
 
@@ -28,6 +26,7 @@
 
 <style>
 	div {
+		margin: 2% auto;
 		display: flex;
 		justify-content: space-around;
 	}

@@ -2,25 +2,22 @@
 	import type { Operation, Point2D } from '$lib/core/Common';
 
 	export let boardSizePx: number;
-	export let boardOffsetPx: Point2D;
 	export let cannotDivideReason: string;
 	export let handleMathOpClick: (op: Operation) => void;
 
-	let divStyle: string;
-
-	$: {
-		divStyle = `width: ${boardSizePx}px;`;
-	}
+	$: btnSize = boardSizePx * 0.13;
+	$: divStyle = `width: ${boardSizePx}px;`;
+	$: btnStyle = `font-size: ${btnSize * 0.5}px;width: ${btnSize}px; height: ${btnSize}px;`;
 </script>
 
 <div style={divStyle}>
-	<button on:click={() => handleMathOpClick('+')}>+</button>
-	<button on:click={() => handleMathOpClick('-')}>−</button>
-	<button on:click={() => handleMathOpClick('*')}>×</button>
+	<button style={btnStyle} on:click={() => handleMathOpClick('+')}>+</button>
+	<button style={btnStyle} on:click={() => handleMathOpClick('-')}>−</button>
+	<button style={btnStyle} on:click={() => handleMathOpClick('*')}>×</button>
 	{#if cannotDivideReason}
-		<button class="disabled" title={cannotDivideReason}>÷</button>
+		<button style={btnStyle} class="disabled" title={cannotDivideReason}>÷</button>
 	{:else}
-		<button on:click={() => handleMathOpClick('/')}>÷</button>
+		<button style={btnStyle} on:click={() => handleMathOpClick('/')}>÷</button>
 	{/if}
 </div>
 
@@ -35,9 +32,6 @@
 		color: #64748b;
 		border: unset;
 		border-radius: 50%;
-		/* padding: 0.75rem 1.5rem; */
-		width: 4vw;
-		height: 4vw;
 		cursor: pointer;
 		font-size: xx-large;
 	}

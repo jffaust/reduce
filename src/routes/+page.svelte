@@ -78,15 +78,17 @@
 	}
 
 	function refreshLayout() {
-		let maxWidth = window.innerWidth * 0.9;
+		let maxWidth = window.innerWidth * 0.85;
 		let maxHeight = window.innerHeight * 0.6;
 
 		let projectedBoardSizePx = maxWidth;
-		//we want the board to be either 80% of the width or 60% of the height
+		//we want the board to be either 85% of the width or 60% of the height
 		if (maxHeight < maxWidth) {
 			projectedBoardSizePx = maxHeight;
 		}
 
+		// TODO: consider gap/spacing between tiles. As it is right now,
+		// the actual board will be bigger than boardSizePx
 		boardSizePx = Math.floor(projectedBoardSizePx);
 
 		//square grids so we can just check the first array's length
@@ -184,7 +186,7 @@
 	<h1 on:click={newRandomLevel}>REDUCE</h1>
 	{#if layoutRefreshed}
 		<GameBoard {boardOffsetPx} {board} {selection} {boardSizePx} {tileSizePx} />
-		<MathOperators {boardOffsetPx} {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
+		<MathOperators {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
 	{/if}
 </main>
 

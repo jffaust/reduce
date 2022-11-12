@@ -32,6 +32,7 @@
 		refreshLayout(boardOffsetPx, tileSizePx, selection);
 	});
 
+	$: textStyle = `font-size: ${tileSizePx * 0.3}px;`;
 	$: tileClass = getTileClass(selection);
 	$: connectors = computeConnectors(selection);
 
@@ -173,19 +174,18 @@
 	on:pointerleave={onPointerLeave}
 >
 	{#if tileValue != 'X'}
-		<p>{tileValue}</p>
+		<p style={textStyle}>{tileValue}</p>
 	{/if}
 </div>
 
 <style>
 	div {
 		display: inline-block;
-		font-size: xxx-large;
 		border-radius: 4px;
 		user-select: none;
 		background: #e2e8f0;
 		color: #64748b;
-		margin: 0 8px;
+		margin: 0 4px;
 		position: relative;
 	}
 

@@ -7,6 +7,7 @@
 	import { Utils } from '$lib/core/Utils';
 	import { Game } from '$lib/core/Game';
 	import { onMount } from 'svelte';
+	import { pointedTile } from '$lib/stores';
 
 	let dragging = false;
 	let previousPointerDragPos: Point2D | null = null;
@@ -21,6 +22,8 @@
 	let selection: Selection;
 	let cannotDivideReason = '';
 	let boardGenerator = new BoardGenerator(Date.now());
+
+	pointedTile.subscribe(tryUpdateSelection);
 
 	onMount(newRandomLevel);
 
@@ -104,46 +107,35 @@
 		layoutRefreshed = true;
 	}
 
-	function handlePointerMove(e: PointerEvent) {
-		if (!layoutRefreshed) return;
-		if (dragging) {
-			let tilePos = Utils.getBoardPositionFromPointer(
-				boardOffsetPx,
-				board,
-				tileSizePx,
-				e.clientX,
-				e.clientY
-			);
+	function tryUpdateSelection(tilePos: Point2D | null) {
+		if (dragging && tilePos) {
+			if (previousPointerDragPos == undefined) {
+				// We start dragging on tiles
+				previousPointerDragPos = Object.assign({}, tilePos);
 
-			if (tilePos) {
-				if (previousPointerDragPos == undefined) {
-					// We start dragging on tiles
-					previousPointerDragPos = Object.assign({}, tilePos);
-
-					// Are we outside the current selection head?
-					let selPath = game.getCurrentSelection().getPath();
-					if (
-						selPath.length == 0 ||
-						tilePos.x != selPath[selPath.length - 1].x ||
-						tilePos.y != selPath[selPath.length - 1].y
-					) {
-						// We reset the selection
-						game.setSelection(new Selection([tilePos]));
-						onSelectionUpdated();
-					}
-				} else if (
-					(tilePos.x == previousPointerDragPos.x + 1 && tilePos.y == previousPointerDragPos.y) ||
-					(tilePos.x == previousPointerDragPos.x - 1 && tilePos.y == previousPointerDragPos.y) ||
-					(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y + 1) ||
-					(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y - 1)
+				// Are we outside the current selection head?
+				let selPath = game.getCurrentSelection().getPath();
+				if (
+					selPath.length == 0 ||
+					tilePos.x != selPath[selPath.length - 1].x ||
+					tilePos.y != selPath[selPath.length - 1].y
 				) {
-					let dir = Utils.GetDirection(previousPointerDragPos, tilePos);
-					if (dir) {
-						let selectionUpdated = game.updateSelection(dir, false);
-						if (selectionUpdated) {
-							previousPointerDragPos = Object.assign({}, tilePos);
-							onSelectionUpdated();
-						}
+					// We reset the selection
+					game.setSelection(new Selection([tilePos]));
+					onSelectionUpdated();
+				}
+			} else if (
+				(tilePos.x == previousPointerDragPos.x + 1 && tilePos.y == previousPointerDragPos.y) ||
+				(tilePos.x == previousPointerDragPos.x - 1 && tilePos.y == previousPointerDragPos.y) ||
+				(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y + 1) ||
+				(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y - 1)
+			) {
+				let dir = Utils.GetDirection(previousPointerDragPos, tilePos);
+				if (dir) {
+					let selectionUpdated = game.updateSelection(dir, false);
+					if (selectionUpdated) {
+						previousPointerDragPos = Object.assign({}, tilePos);
+						onSelectionUpdated();
 					}
 				}
 			}
@@ -169,6 +161,7 @@
 	function handlePointerDown(e: PointerEvent) {
 		if (e.button == 0) {
 			dragging = true;
+			tryUpdateSelection($pointedTile);
 		}
 	}
 
@@ -183,7 +176,6 @@
 <svelte:window
 	on:keyup={handleKeyUp}
 	on:resize={refreshLayout}
-	on:pointermove={handlePointerMove}
 	on:pointerdown={handlePointerDown}
 	on:pointerup={handlePointerUp}
 />

@@ -3,6 +3,7 @@
 	import { Utils } from '$lib/core/Utils';
 	import type { Selection } from '$lib/core/Selection';
 	import type { Direction, Point2D, TileValue } from '$lib/core/Common';
+	import { pointedTile } from '$lib/stores';
 
 	export let tileX: number;
 	export let tileY: number;
@@ -149,9 +150,28 @@
 		}
 		connectors = computeConnectors(selection);
 	}
+
+	function onPointerEnter() {
+		if (tileValue != 'X') {
+			$pointedTile = {
+				x: tileX,
+				y: tileY
+			};
+		}
+	}
+
+	function onPointerLeave() {
+		$pointedTile = null;
+	}
 </script>
 
-<div bind:this={cell} class={tileClass} style={cellStyle}>
+<div
+	bind:this={cell}
+	class={tileClass}
+	style={cellStyle}
+	on:pointerenter={onPointerEnter}
+	on:pointerleave={onPointerLeave}
+>
 	{#if tileValue != 'X'}
 		<p>{tileValue}</p>
 	{/if}
@@ -176,12 +196,23 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
+
+	div:hover {
+		background: #cbd5e1;
+		color: #475569;
+	}
+	div:focus {
+		background: #94a3b8;
+		color: #f1f5f9;
+	}
+
 	.used {
-		background-color: lightgrey;
-		transition: background-color 0.5s ease;
+		visibility: hidden;
+		/* background-color: lightgrey;
+		transition: background-color 0.5s ease; */
 	}
 	.selected {
-		background-color: rgb(223, 223, 247);
+		background-color: rgb(200, 200, 241) !important;
 		transition: background-color 0.5s ease;
 	}
 	.selected.left {

@@ -17,7 +17,7 @@
 	let cellStyle = '';
 	let selected = false;
 	let cellRect: DOMRect;
-	let cell: HTMLTableCellElement;
+	let cell: HTMLDivElement;
 	let selectionCircleRadius: number;
 	let selectionCircleStrokeWidth: number;
 	let connectors: Line[];
@@ -151,60 +151,49 @@
 	}
 </script>
 
-<td bind:this={cell} class={tileClass} style={cellStyle}>
+<div bind:this={cell} class={tileClass} style={cellStyle}>
 	{#if tileValue != 'X'}
-		{tileValue}
+		<p>{tileValue}</p>
 	{/if}
-	{#if selected}
-		<svg style={svgStyle}>
-			{#each connectors as line (line)}
-				<line
-					x1={line.start.x}
-					y1={line.start.y}
-					x2={line.end.x}
-					y2={line.end.y}
-					stroke="darkgray"
-					stroke-width="2"
-				/>
-			{/each}
-			<circle
-				cx={tileSizePx / 2}
-				cy={tileSizePx / 2}
-				r={selectionCircleRadius}
-				stroke="darkgray"
-				stroke-width={selectionCircleStrokeWidth}
-				fill="none"
-			/>
-		</svg>
-	{/if}
-</td>
+</div>
 
 <style>
-	td {
+	div {
+		display: inline-block;
 		font-size: xxx-large;
 		border-radius: 4px;
 		user-select: none;
 		background: #e2e8f0;
 		color: #64748b;
+		margin: 0 8px;
+		position: relative;
 	}
-	td.used {
+
+	div p {
+		position: absolute;
+		margin: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.used {
 		background-color: lightgrey;
 		transition: background-color 0.5s ease;
 	}
-	td.selected {
+	.selected {
 		background-color: rgb(223, 223, 247);
 		transition: background-color 0.5s ease;
 	}
-	td.selected.left {
+	.selected.left {
 		border-left-style: none;
 	}
-	td.selected.right {
+	.selected.right {
 		border-right-style: none;
 	}
-	td.selected.up {
+	.selected.up {
 		border-top-style: none;
 	}
-	td.selected.down {
+	.selected.down {
 		border-bottom-style: none;
 	}
 </style>

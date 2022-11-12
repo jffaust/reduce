@@ -34,8 +34,10 @@
 		background: #e2e8f0;
 		color: #64748b;
 		border: unset;
-		border-radius: 6px;
-		padding: 0.75rem 1.5rem;
+		border-radius: 50%;
+		/* padding: 0.75rem 1.5rem; */
+		width: 4vw;
+		height: 4vw;
 		cursor: pointer;
 		font-size: xx-large;
 	}

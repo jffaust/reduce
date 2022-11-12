@@ -9,23 +9,26 @@
 	export let boardOffsetPx: Point2D;
 	export let selection: Selection;
 
-	$: tableStyle = `width: ${boardSizePx}px; height: ${boardSizePx}px;`;
+	$: tableStyle = ''; //`width: ${boardSizePx}px; height: ${boardSizePx}px;`;
 </script>
 
-<table style={tableStyle}>
+<div class="board" style={tableStyle}>
 	{#each board as row, y (y)}
-		<tr>
+		<div class="row">
 			{#each row as tileValue, x (x)}
 				<Tile {boardOffsetPx} {tileSizePx} {selection} {tileValue} tileX={x} tileY={y} />
 			{/each}
-		</tr>
+		</div>
 	{/each}
-</table>
+</div>
 
 <style>
-	table {
+	.board {
 		margin: 0 auto;
-		border-spacing: 10px;
 		/* border-collapse: collapse; */
+	}
+
+	.row {
+		margin: 8px 0;
 	}
 </style>

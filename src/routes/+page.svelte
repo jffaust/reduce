@@ -26,6 +26,7 @@
 
 	function newRandomLevel() {
 		game = new Game(boardGenerator.generate(5, 4, ['+', '-'], 0, 4)[0]);
+		console.log(game.getCurrentBoard());
 		refreshBoard();
 		refreshLayout();
 	}
@@ -74,7 +75,7 @@
 	}
 
 	function refreshLayout() {
-		let maxWidth = window.innerWidth * 0.8;
+		let maxWidth = window.innerWidth * 0.9;
 		let maxHeight = window.innerHeight * 0.6;
 
 		let projectedBoardSizePx = maxWidth;

@@ -185,7 +185,7 @@
 <main>
 	<h1 on:click={newRandomLevel}>REDUCE</h1>
 	{#if layoutRefreshed}
-		<GameBoard {boardOffsetPx} {board} {selection} {boardSizePx} {tileSizePx} />
+		<GameBoard {boardOffsetPx} {board} {selection} {tileSizePx} />
 		<MathOperators {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
 	{/if}
 </main>

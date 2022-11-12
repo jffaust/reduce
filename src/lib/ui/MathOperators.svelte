@@ -8,16 +8,21 @@
 	$: btnSize = boardSizePx * 0.13;
 	$: divStyle = `width: ${boardSizePx}px;`;
 	$: btnStyle = `font-size: ${btnSize * 0.5}px;width: ${btnSize}px; height: ${btnSize}px;`;
+
+	function handleButtonClick(op: Operation) {
+		handleMathOpClick(op);
+		(document.activeElement as HTMLElement).blur();
+	}
 </script>
 
 <div style={divStyle}>
-	<button style={btnStyle} on:click={() => handleMathOpClick('+')}>+</button>
-	<button style={btnStyle} on:click={() => handleMathOpClick('-')}>−</button>
-	<button style={btnStyle} on:click={() => handleMathOpClick('*')}>×</button>
+	<button style={btnStyle} on:click={() => handleButtonClick('+')}>+</button>
+	<button style={btnStyle} on:click={() => handleButtonClick('-')}>−</button>
+	<button style={btnStyle} on:click={() => handleButtonClick('*')}>×</button>
 	{#if cannotDivideReason}
 		<button style={btnStyle} class="disabled" title={cannotDivideReason}>÷</button>
 	{:else}
-		<button style={btnStyle} on:click={() => handleMathOpClick('/')}>÷</button>
+		<button style={btnStyle} on:click={() => handleButtonClick('/')}>÷</button>
 	{/if}
 </div>
 
@@ -28,7 +33,7 @@
 		justify-content: space-around;
 	}
 	button {
-		background: #e2e8f0;
+		background: #e5f0e2;
 		color: #64748b;
 		border: unset;
 		border-radius: 50%;
@@ -36,16 +41,16 @@
 		font-size: xx-large;
 	}
 	button:hover {
-		background: #cbd5e1;
+		background: #c9ddc4;
 		color: #475569;
 	}
 	button:focus {
-		background: #94a3b8;
-		color: #f1f5f9;
+		background: #b8cfb2;
 	}
 
 	button.disabled {
 		cursor: not-allowed;
+		color: #64748b !important;
 		background: lightcoral !important;
 	}
 </style>

@@ -5,7 +5,6 @@
 
 	export let board: Board;
 	export let tileSizePx: number;
-	export let boardSizePx: number;
 	export let boardOffsetPx: Point2D;
 	export let selection: Selection;
 
@@ -16,7 +15,7 @@
 	{#each board as row, y (y)}
 		<div class="row">
 			{#each row as tileValue, x (x)}
-				<Tile {boardOffsetPx} {tileSizePx} {selection} {tileValue} tileX={x} tileY={y} />
+				<Tile {tileSizePx} {selection} {tileValue} tileX={x} tileY={y} />
 			{/each}
 		</div>
 	{/each}

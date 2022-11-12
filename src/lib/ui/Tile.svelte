@@ -8,7 +8,6 @@
 	export let tileX: number;
 	export let tileY: number;
 	export let tileSizePx: number;
-	export let boardOffsetPx: Point2D;
 	export let selection: Selection;
 	export let tileValue: TileValue;
 
@@ -25,11 +24,11 @@
 	const lineStyle = '';
 
 	$: {
-		refreshLayout(boardOffsetPx, tileSizePx, selection);
+		refreshLayout(tileSizePx, selection);
 	}
 
 	onMount(() => {
-		refreshLayout(boardOffsetPx, tileSizePx, selection);
+		refreshLayout(tileSizePx, selection);
 	});
 
 	$: textStyle = `font-size: ${tileSizePx * 0.3}px;`;
@@ -77,6 +76,10 @@
 			if (pos.x == tileX && pos.y == tileY) {
 				selected = true;
 				let tileClass = 'selected';
+
+				if (i === path.length - 1) {
+					tileClass += ' head';
+				}
 
 				selectionCircleStrokeWidth = 2;
 				if (i == path.length - 1) {
@@ -141,7 +144,7 @@
 		}
 	}
 
-	function refreshLayout(boardOffset: Point2D, tileSize: number, sel: Selection) {
+	function refreshLayout(tileSize: number, sel: Selection) {
 		selectionCircleRadius = tileSize / 4;
 		cellStyle = `width: ${tileSize}px; height: ${tileSize}px;`;
 		if (cell) {
@@ -207,12 +210,16 @@
 	}
 
 	.used {
-		visibility: hidden;
-		/* background-color: lightgrey;
-		transition: background-color 0.5s ease; */
+		/* visibility: hidden; */
+		background-color: rgb(245, 245, 245) !important;
+		transition: background-color 0.5s ease;
 	}
 	.selected {
-		background-color: rgb(200, 200, 241) !important;
+		background-color: lightsteelblue !important;
+		transition: background-color 0.5s ease;
+	}
+	.selected.head {
+		background-color: lightskyblue !important;
 		transition: background-color 0.5s ease;
 	}
 	.selected.left {

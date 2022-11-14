@@ -31,24 +31,38 @@
 			return;
 		}
 
-		let start = {
+		let cc = {
+			// center of the current
 			// 8 is the gap between tiles
 			x: current.x * (tileSizePx + 8) + tileSizePx / 2 + 4,
 			y: current.y * (tileSizePx + 8) + tileSizePx / 2
 		};
+		let ec = {
+			// center of the next tile
+			// 8 is the gap between tiles
+			x: next.x * (tileSizePx + 8) + tileSizePx / 2 + 4,
+			y: next.y * (tileSizePx + 8) + tileSizePx / 2
+		};
+
+		let start: Point2D;
 		let end: Point2D;
+		const offset = tileSizePx / 2.2;
 		switch (nextDir) {
 			case 'up':
-				end = { x: start.x, y: start.y - tileSizePx };
+				start = { x: cc.x, y: cc.y - offset };
+				end = { x: ec.x, y: ec.y + offset };
 				break;
 			case 'down':
-				end = { x: start.x, y: start.y + tileSizePx };
+				start = { x: cc.x, y: cc.y + offset };
+				end = { x: ec.x, y: ec.y - offset };
 				break;
 			case 'left':
-				end = { x: start.x - tileSizePx, y: start.y };
+				start = { x: cc.x - offset, y: cc.y };
+				end = { x: ec.x + offset, y: ec.y };
 				break;
 			case 'right':
-				end = { x: start.x + tileSizePx, y: start.y };
+				start = { x: cc.x + offset, y: cc.y };
+				end = { x: ec.x - offset, y: ec.y };
 				break;
 		}
 		return { start, end };
@@ -62,7 +76,7 @@
 			y1={line.start.y}
 			x2={line.end.x}
 			y2={line.end.y}
-			stroke-width={tileSizePx / 4}
+			stroke-width={tileSizePx / 5}
 		/>
 	{/each}
 </svg>
@@ -74,10 +88,11 @@
 		width: 100%;
 		height: 100%;
 		position: absolute;
+		/* pointer-events: none; */
 		/* background-color: lightcoral; */
 	}
 
 	line {
-		stroke: lightslategray;
+		stroke: rgb(127, 157, 197) !important;
 	}
 </style>

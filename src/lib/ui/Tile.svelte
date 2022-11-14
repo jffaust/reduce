@@ -156,6 +156,7 @@
 	}
 
 	function onPointerEnter() {
+		console.log('tile onPointerEnter');
 		if (tileValue != 'X') {
 			$pointedTile = {
 				x: tileX,
@@ -165,6 +166,7 @@
 	}
 
 	function onPointerLeave() {
+		console.log('tile onPointerLeave');
 		$pointedTile = null;
 	}
 </script>
@@ -190,6 +192,7 @@
 		color: #64748b;
 		margin: 0 4px;
 		position: relative;
+		cursor: pointer;
 	}
 
 	div p {
@@ -203,10 +206,6 @@
 	div:hover {
 		background: #cbd5e1;
 		color: #475569;
-	}
-	div:focus {
-		background: #94a3b8;
-		color: #f1f5f9;
 	}
 
 	.used {

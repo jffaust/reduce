@@ -161,6 +161,13 @@
 	}
 
 	function handlePointerDown(e: PointerEvent) {
+		const element = e.target as HTMLElement;
+		if (element) {
+			console.log('Releasing');
+			// Very important to make the on:pointerenter and leave work on mobile
+			// https://stackoverflow.com/a/57046105
+			element.releasePointerCapture(e.pointerId);
+		}
 		if (e.button == 0) {
 			dragging = true;
 			tryUpdateSelection($pointedTile);

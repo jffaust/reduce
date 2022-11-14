@@ -28,6 +28,6 @@
 	}
 
 	.row {
-		margin: 8px 0;
+		margin: 4px 0;
 	}
 </style>

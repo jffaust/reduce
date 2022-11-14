@@ -163,7 +163,6 @@
 	function handlePointerDown(e: PointerEvent) {
 		const element = e.target as HTMLElement;
 		if (element) {
-			console.log('Releasing');
 			// Very important to make the on:pointerenter and leave work on mobile
 			// https://stackoverflow.com/a/57046105
 			element.releasePointerCapture(e.pointerId);
@@ -192,7 +191,7 @@
 <main>
 	<h1 on:click={newRandomLevel}>REDUCE</h1>
 	{#if layoutRefreshed}
-		<GameBoard {boardOffsetPx} {board} {selection} {tileSizePx} />
+		<GameBoard {board} {selection} {tileSizePx} />
 		<MathOperators {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
 	{/if}
 </main>

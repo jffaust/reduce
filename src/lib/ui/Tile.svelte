@@ -3,6 +3,7 @@
 	import type { Selection } from '$lib/core/Selection';
 	import type { TileValue } from '$lib/core/Common';
 	import { pointedTile } from '$lib/stores';
+	import { Utils } from '$lib/core/Utils';
 
 	export let tileX: number;
 	export let tileY: number;
@@ -11,7 +12,6 @@
 	export let tileValue: TileValue;
 
 	let cellStyle = '';
-	let selected = false;
 	let cell: HTMLDivElement;
 
 	$: {
@@ -27,7 +27,6 @@
 
 	function getTileClass(sel: Selection) {
 		if (tileValue == 'X') {
-			selected = false;
 			return 'used';
 		}
 
@@ -35,17 +34,29 @@
 		for (let i = 0; i < path.length; i++) {
 			const pos = path[i];
 			if (pos.x == tileX && pos.y == tileY) {
-				selected = true;
 				let tileClass = 'selected';
 
 				if (i === path.length - 1) {
 					tileClass += ' head';
 				}
 
+				const prev = i - 1;
+				if (prev >= 0) {
+					const prevPos = path[prev];
+					const prevDir = Utils.GetDirection(pos, prevPos);
+					tileClass += ` ${prevDir}`;
+				}
+
+				const next = i + 1;
+				if (next < path.length) {
+					const nextPos = path[next];
+					const nextDir = Utils.GetDirection(pos, nextPos);
+					tileClass += ` ${nextDir}`;
+				}
+
 				return tileClass;
 			}
 		}
-		selected = false;
 		return '';
 	}
 
@@ -67,7 +78,7 @@
 	}
 </script>
 
-<div
+<td
 	bind:this={cell}
 	class={tileClass}
 	style={cellStyle}
@@ -77,36 +88,26 @@
 	{#if tileValue != 'X'}
 		<p style={textStyle}>{tileValue}</p>
 	{/if}
-</div>
+</td>
 
 <style>
-	div {
-		display: inline-block;
-		border-radius: 4px;
+	td {
+		border: 3px solid #7e8a9c;
 		user-select: none;
 		background: #e2e8f0;
-		color: #64748b;
-		margin: 0 4px;
-		position: relative;
+		color: #475569;
+		box-sizing: border-box;
+	}
+
+	td:hover {
+		background: #cbd5e1;
+		color: #475569;
 		cursor: pointer;
 	}
 
-	div p {
-		position: absolute;
-		margin: 0;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
-
-	div:hover {
-		background: #cbd5e1;
-		color: #475569;
-	}
-
 	.used {
-		/* visibility: hidden; */
-		background-color: rgb(245, 245, 245) !important;
+		cursor: default !important;
+		background-color: rgb(237, 237, 241) !important;
 		transition: background-color 0.5s ease;
 	}
 	.selected {
@@ -116,5 +117,22 @@
 	.selected.head {
 		background-color: lightskyblue !important;
 		transition: background-color 0.5s ease;
+	}
+
+	td.selected.left {
+		border-left-style: dashed;
+		border-left-width: 1px;
+	}
+	td.selected.right {
+		border-right-style: dashed;
+		border-right-width: 1px;
+	}
+	td.selected.up {
+		border-top-style: dashed;
+		border-top-width: 1px;
+	}
+	td.selected.down {
+		border-bottom-style: dashed;
+		border-bottom-width: 1px;
 	}
 </style>

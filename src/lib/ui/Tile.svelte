@@ -3,6 +3,7 @@
 	import type { Selection } from '$lib/core/Selection';
 	import type { TileValue } from '$lib/core/Common';
 	import { pointedTile } from '$lib/stores';
+	import { interpolateRgb } from 'd3-interpolate';
 
 	export let tileX: number;
 	export let tileY: number;
@@ -10,47 +11,44 @@
 	export let selection: Selection;
 	export let tileValue: TileValue;
 
-	let cellStyle = '';
-	let selected = false;
-	let cell: HTMLDivElement;
+	let tileBG = '';
+	let tileStyle = '';
+	let tileClass = '';
+	let textStyle = '';
 
-	$: {
-		refreshLayout(tileSizePx, selection);
-	}
+	const interpolate = interpolateRgb('lightsteelblue', 'mediumaquamarine');
+
+	$: calcTileStyle(selection);
+	$: refreshLayout(tileSizePx);
 
 	onMount(() => {
-		refreshLayout(tileSizePx, selection);
+		refreshLayout(tileSizePx);
 	});
 
-	$: textStyle = `font-size: ${tileSizePx * 0.3}px;`;
-	$: tileClass = getTileClass(selection);
-
-	function getTileClass(sel: Selection) {
+	function calcTileStyle(sel: Selection) {
 		if (tileValue == 'X') {
-			selected = false;
-			return 'used';
+			tileClass = 'used';
 		}
 
+		tileBG = '';
 		let path = sel.getPath();
 		for (let i = 0; i < path.length; i++) {
 			const pos = path[i];
 			if (pos.x == tileX && pos.y == tileY) {
-				selected = true;
-				let tileClass = 'selected';
-
-				if (i === path.length - 1) {
-					tileClass += ' head';
-				}
-
-				return tileClass;
+				tileClass = 'selected';
+				// boards can have a total of 25 tiles
+				tileBG = interpolate(i / 9);
 			}
 		}
-		selected = false;
-		return '';
+
+		// if (tileClass != 'selected') {
+		// 	tileBG = ''
+		// }
 	}
 
-	function refreshLayout(tileSize: number, sel: Selection) {
-		cellStyle = `width: ${tileSize}px; height: ${tileSize}px;`;
+	function refreshLayout(tileSize: number) {
+		textStyle = `font-size: ${tileSizePx * 0.3}px;`;
+		tileStyle = `width: ${tileSize}px; height: ${tileSize}px;`;
 	}
 
 	function onPointerEnter() {
@@ -68,9 +66,9 @@
 </script>
 
 <div
-	bind:this={cell}
+	style={tileStyle}
+	style:background={tileBG}
 	class={tileClass}
-	style={cellStyle}
 	on:pointerenter={onPointerEnter}
 	on:pointerleave={onPointerLeave}
 >
@@ -110,11 +108,7 @@
 		transition: background-color 0.5s ease;
 	}
 	.selected {
-		background-color: lightsteelblue !important;
-		transition: background-color 0.5s ease;
-	}
-	.selected.head {
-		background-color: lightskyblue !important;
+		/* background-color: lightsteelblue !important; */
 		transition: background-color 0.5s ease;
 	}
 </style>

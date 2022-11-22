@@ -12,7 +12,6 @@
 </script>
 
 <div class="board" style={tableStyle}>
-	<SelectionPath {selection} {tileSizePx} />
 	{#each board as row, y (y)}
 		<div class="row">
 			{#each row as tileValue, x (x)}

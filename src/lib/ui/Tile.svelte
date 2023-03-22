@@ -92,15 +92,15 @@
 
 <style>
 	td {
-		border: 3px solid #7e8a9c;
+		border: 2px solid rgb(159, 163, 170);
 		user-select: none;
-		background: #e2e8f0;
+		background: #f1f8ef;
 		color: #475569;
 		box-sizing: border-box;
 	}
 
 	td:hover {
-		background: #cbd5e1;
+		background: rgb(222, 231, 179) !important;
 		color: #475569;
 		cursor: pointer;
 	}
@@ -113,24 +113,28 @@
 		transition: background-color 0.5s ease;
 	}
 	.selected {
-		background-color: lightsteelblue !important;
+		background-color: #c9ddc4 !important;
 		transition: background-color 0.5s ease;
 	}
 	.selected.head {
-		background-color: lightskyblue !important;
+		background-color: rgb(141, 199, 141) !important;
 		transition: background-color 0.5s ease;
 	}
 
 	td.selected.left {
+		border-left-style: dotted;
 		border-left-width: 1px;
 	}
 	td.selected.right {
+		border-right-style: dotted;
 		border-right-width: 1px;
 	}
 	td.selected.up {
+		border-top-style: dotted;
 		border-top-width: 1px;
 	}
 	td.selected.down {
+		border-bottom-style: dotted;
 		border-bottom-width: 1px;
 	}
 </style>

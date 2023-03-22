@@ -55,9 +55,11 @@
 				}
 			}
 		} else if (event.key == '-' || event.key == '+' || event.key == '*' || event.key == '/') {
-			game.reduceSelection(event.key);
-			//TODO: error handling
+			const result = game.reduceSelection(event.key);
 			refreshBoard();
+			if (result.ok && game.isBoardCleared()) {
+				console.log('Victory!');
+			}
 		} else if (event.key == 'z' && event.getModifierState('Control')) {
 			game.popState();
 			refreshBoard();
@@ -65,9 +67,12 @@
 	}
 
 	function handleMathOpClick(op: Operation) {
-		//TODO: error handling
-		game.reduceSelection(op);
+		const result = game.reduceSelection(op);
 		refreshBoard();
+
+		if (result.ok && game.isBoardCleared()) {
+			console.log('Victory!');
+		}
 	}
 
 	function refreshBoard() {

@@ -136,7 +136,6 @@ export class Game {
         }
     }
 
-    // returns true if the board is cleared
     reduceSelection(op: Operation): Result<boolean, ReduceErrorReason> {
         let path = this.getCurrentSelection().getPath();
         if (this.BoardCleared) { return Ok(true); }

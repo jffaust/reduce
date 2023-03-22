@@ -100,7 +100,7 @@
 	}
 
 	td:hover:not(.used) {
-		background: #aff76d !important;
+		background: #79c769 !important;
 		color: #475569;
 		cursor: pointer;
 	}
@@ -117,7 +117,7 @@
 		transition: background-color 0.5s ease;
 	}
 	.selected.head {
-		background-color: #aff76d !important;
+		background-color: #79c769 !important;
 		transition: background-color 0.5s ease;
 	}
 

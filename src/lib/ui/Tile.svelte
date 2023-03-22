@@ -92,15 +92,15 @@
 
 <style>
 	td {
-		border: 2px solid rgb(159, 163, 170);
+		border: 2px solid #8c8e92;
 		user-select: none;
-		background: #f1f8ef;
+		background: #eff3f8;
 		color: #475569;
 		box-sizing: border-box;
 	}
 
-	td:hover {
-		background: rgb(222, 231, 179) !important;
+	td:hover:not(.used) {
+		background: #aff76d !important;
 		color: #475569;
 		cursor: pointer;
 	}
@@ -113,11 +113,11 @@
 		transition: background-color 0.5s ease;
 	}
 	.selected {
-		background-color: #c9ddc4 !important;
+		background-color: #c2dfba !important;
 		transition: background-color 0.5s ease;
 	}
 	.selected.head {
-		background-color: rgb(141, 199, 141) !important;
+		background-color: #aff76d !important;
 		transition: background-color 0.5s ease;
 	}
 

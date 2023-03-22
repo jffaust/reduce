@@ -107,7 +107,9 @@
 
 	.used {
 		cursor: default !important;
-		background-color: rgb(237, 237, 241) !important;
+		background-color: rgb(245, 245, 245) !important;
+		border-width: 1px;
+		border-color: lightgrey;
 		transition: background-color 0.5s ease;
 	}
 	.selected {
@@ -120,19 +122,15 @@
 	}
 
 	td.selected.left {
-		border-left-style: dashed;
 		border-left-width: 1px;
 	}
 	td.selected.right {
-		border-right-style: dashed;
 		border-right-width: 1px;
 	}
 	td.selected.up {
-		border-top-style: dashed;
 		border-top-width: 1px;
 	}
 	td.selected.down {
-		border-bottom-style: dashed;
 		border-bottom-width: 1px;
 	}
 </style>

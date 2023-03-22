@@ -76,7 +76,7 @@
 			y1={line.start.y}
 			x2={line.end.x}
 			y2={line.end.y}
-			stroke-width={tileSizePx / 5}
+			stroke-width={tileSizePx / 10}
 		/>
 	{/each}
 </svg>

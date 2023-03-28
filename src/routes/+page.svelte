@@ -20,6 +20,7 @@
 	let game: Game;
 	let board: Board;
 	let selection: Selection;
+	let levelCompleted = false;
 	let cannotDivideReason = '';
 	let boardGenerator = new BoardGenerator(Date.now());
 
@@ -28,6 +29,7 @@
 	onMount(newRandomLevel);
 
 	function newRandomLevel() {
+		levelCompleted = false;
 		game = new Game(boardGenerator.generate(5, 4, ['+', '-'], 0, 4)[0]);
 		game.setSelection(new Selection([]));
 		onSelectionUpdated();
@@ -60,7 +62,7 @@
 			const result = game.reduceSelection(event.key);
 			refreshBoard();
 			if (result.ok && game.isBoardCleared()) {
-				console.log('Victory!');
+				levelCompleted = true;
 			}
 		} else if (event.key == 'z' && event.getModifierState('Control')) {
 			game.popState();
@@ -76,7 +78,7 @@
 		refreshBoard();
 
 		if (result.ok && game.isBoardCleared()) {
-			console.log('Victory!');
+			levelCompleted = true;
 		}
 	}
 
@@ -205,6 +207,9 @@
 	{#if layoutRefreshed}
 		<GameBoard {board} {selection} {tileSizePx} />
 		<MathOperators {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
+		{#if levelCompleted}
+			<h2 class="success">Success!</h2>
+		{/if}
 	{/if}
 </main>
 
@@ -221,6 +226,13 @@
 		font-size: 3em;
 		font-weight: 100;
 		user-select: none;
+	}
+
+	.success {
+		color: #8ad17b;
+		font-family: serif;
+		font-size: 3em;
+		font-weight: 100;
 	}
 
 	h1:hover {

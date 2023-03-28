@@ -94,7 +94,7 @@
 	td {
 		border: 2px solid #8c8e92;
 		user-select: none;
-		background: #eff3f8;
+		background: #e5f0e2;
 		color: #475569;
 		box-sizing: border-box;
 	}

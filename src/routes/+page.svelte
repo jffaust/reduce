@@ -29,6 +29,8 @@
 
 	function newRandomLevel() {
 		game = new Game(boardGenerator.generate(5, 4, ['+', '-'], 0, 4)[0]);
+		game.setSelection(new Selection([]));
+		onSelectionUpdated();
 		console.log(game.getCurrentBoard());
 		refreshBoard();
 		refreshLayout();
@@ -67,6 +69,9 @@
 	}
 
 	function handleMathOpClick(op: Operation) {
+		let selection = game.getCurrentSelection().getPath();
+		if (selection.length == 0) return;
+
 		const result = game.reduceSelection(op);
 		refreshBoard();
 
@@ -156,6 +161,8 @@
 				cannotDivideReason = 'Cannot divide by 0';
 			} else if (result.val == ReduceErrorReason.ResultIsDecimal) {
 				cannotDivideReason = 'Resulting number would be decimal';
+			} else if (result.val == ReduceErrorReason.InvalidSelection) {
+				cannotDivideReason = '';
 			}
 		} else {
 			cannotDivideReason = '';

@@ -94,30 +94,30 @@
 	td {
 		border: 2px solid #8c8e92;
 		user-select: none;
-		background: #e5f0e2;
+		background: #e7f2e4;
 		color: #475569;
 		box-sizing: border-box;
 	}
 
 	td:hover:not(.used) {
-		background: #79c769 !important;
+		background: #c9ddc4;
 		color: #475569;
 		cursor: pointer;
 	}
 
 	.used {
 		cursor: default !important;
-		background-color: rgb(245, 245, 245) !important;
+		background-color: rgb(241, 241, 241) !important;
 		border-width: 1px;
 		border-color: lightgrey;
 		transition: background-color 0.5s ease;
 	}
 	.selected {
-		background-color: #c2dfba !important;
+		background-color: #c9ddc4 !important;
 		transition: background-color 0.5s ease;
 	}
 	.selected.head {
-		background-color: #79c769 !important;
+		background-color: #8ad17b !important;
 		transition: background-color 0.5s ease;
 	}
 

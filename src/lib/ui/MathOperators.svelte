@@ -45,7 +45,7 @@
 		color: #475569;
 	}
 	button:focus {
-		background: #b8cfb2;
+		background: #8ad17b;
 	}
 
 	button.disabled {

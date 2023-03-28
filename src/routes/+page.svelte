@@ -215,7 +215,7 @@
 	}
 
 	h1 {
-		color: #64748b;
+		color: #475569;
 		font-family: serif;
 		text-transform: uppercase;
 		font-size: 3em;

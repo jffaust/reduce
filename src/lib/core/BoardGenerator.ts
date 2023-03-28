@@ -121,6 +121,7 @@ export class BoardGenerator {
 
         if (selection.getPath().length == 0) return true;
 
+        // try to achieve desired length but can break out if no more directions are valid
         while (selection.getPath().length < desiredLength) {
 
             let path = selection.getPath();
@@ -159,7 +160,7 @@ export class BoardGenerator {
             selection.continue(nextPos);
         }
 
-        if (selection.getPath().length < 2 || selection.getPath().length < desiredLength) {
+        if (selection.getPath().length < 2) {
             return true;
         } else { return false; }
     }

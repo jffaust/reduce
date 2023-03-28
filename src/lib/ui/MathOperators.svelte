@@ -2,55 +2,55 @@
 	import type { Operation, Point2D } from '$lib/core/Common';
 
 	export let boardSizePx: number;
-	export let boardOffsetPx: Point2D;
 	export let cannotDivideReason: string;
 	export let handleMathOpClick: (op: Operation) => void;
 
-	let divStyle: string;
+	$: btnSize = boardSizePx * 0.13;
+	$: divStyle = `width: ${boardSizePx}px;`;
+	$: btnStyle = `font-size: ${btnSize * 0.5}px;width: ${btnSize}px; height: ${btnSize}px;`;
 
-	$: {
-		divStyle = 'position: fixed;';
-		divStyle += `top: ${boardOffsetPx.y + boardSizePx + 50}px;`;
-		divStyle += `left: ${boardOffsetPx.x}px; width: ${boardSizePx}px;`;
+	function handleButtonClick(op: Operation) {
+		handleMathOpClick(op);
+		(document.activeElement as HTMLElement).blur();
 	}
 </script>
 
 <div style={divStyle}>
-	<button on:click={() => handleMathOpClick('+')}>+</button>
-	<button on:click={() => handleMathOpClick('-')}>−</button>
-	<button on:click={() => handleMathOpClick('*')}>×</button>
+	<button style={btnStyle} on:click={() => handleButtonClick('+')}>+</button>
+	<button style={btnStyle} on:click={() => handleButtonClick('-')}>−</button>
+	<button style={btnStyle} on:click={() => handleButtonClick('*')}>×</button>
 	{#if cannotDivideReason}
-		<button class="disabled" title={cannotDivideReason}>÷</button>
+		<button style={btnStyle} class="disabled" title={cannotDivideReason}>÷</button>
 	{:else}
-		<button on:click={() => handleMathOpClick('/')}>÷</button>
+		<button style={btnStyle} on:click={() => handleButtonClick('/')}>÷</button>
 	{/if}
 </div>
 
 <style>
 	div {
+		margin: 5vh auto;
 		display: flex;
 		justify-content: space-around;
 	}
 	button {
-		background: #e2e8f0;
+		background: #e5f0e2;
 		color: #64748b;
 		border: unset;
-		border-radius: 6px;
-		padding: 0.75rem 1.5rem;
+		border-radius: 50%;
 		cursor: pointer;
 		font-size: xx-large;
 	}
 	button:hover {
-		background: #cbd5e1;
+		background: #c9ddc4;
 		color: #475569;
 	}
 	button:focus {
-		background: #94a3b8;
-		color: #f1f5f9;
+		background: #8ad17b;
 	}
 
 	button.disabled {
 		cursor: not-allowed;
+		color: #64748b !important;
 		background: lightcoral !important;
 	}
 </style>

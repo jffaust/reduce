@@ -7,6 +7,7 @@
 	import { Utils } from '$lib/core/Utils';
 	import { Game } from '$lib/core/Game';
 	import { onMount } from 'svelte';
+	import { pointedTile } from '$lib/stores';
 
 	let dragging = false;
 	let previousPointerDragPos: Point2D | null = null;
@@ -19,13 +20,20 @@
 	let game: Game;
 	let board: Board;
 	let selection: Selection;
+	let levelCompleted = false;
 	let cannotDivideReason = '';
 	let boardGenerator = new BoardGenerator(Date.now());
+
+	pointedTile.subscribe(tryUpdateSelection);
 
 	onMount(newRandomLevel);
 
 	function newRandomLevel() {
+		levelCompleted = false;
 		game = new Game(boardGenerator.generate(5, 4, ['+', '-'], 0, 4)[0]);
+		game.setSelection(new Selection([]));
+		onSelectionUpdated();
+		console.log(game.getCurrentBoard());
 		refreshBoard();
 		refreshLayout();
 	}
@@ -51,9 +59,11 @@
 				}
 			}
 		} else if (event.key == '-' || event.key == '+' || event.key == '*' || event.key == '/') {
-			game.reduceSelection(event.key);
-			//TODO: error handling
+			const result = game.reduceSelection(event.key);
 			refreshBoard();
+			if (result.ok && game.isBoardCleared()) {
+				levelCompleted = true;
+			}
 		} else if (event.key == 'z' && event.getModifierState('Control')) {
 			game.popState();
 			refreshBoard();
@@ -61,9 +71,15 @@
 	}
 
 	function handleMathOpClick(op: Operation) {
-		//TODO: error handling
-		game.reduceSelection(op);
+		let selection = game.getCurrentSelection().getPath();
+		if (selection.length == 0) return;
+
+		const result = game.reduceSelection(op);
 		refreshBoard();
+
+		if (result.ok && game.isBoardCleared()) {
+			levelCompleted = true;
+		}
 	}
 
 	function refreshBoard() {
@@ -74,15 +90,17 @@
 	}
 
 	function refreshLayout() {
-		let maxWidth = window.innerWidth * 0.8;
+		let maxWidth = window.innerWidth * 0.85;
 		let maxHeight = window.innerHeight * 0.6;
 
 		let projectedBoardSizePx = maxWidth;
-		//we want the board to be either 80% of the width or 60% of the height
+		//we want the board to be either 85% of the width or 60% of the height
 		if (maxHeight < maxWidth) {
 			projectedBoardSizePx = maxHeight;
 		}
 
+		// TODO: consider gap/spacing between tiles. As it is right now,
+		// the actual board will be bigger than boardSizePx
 		boardSizePx = Math.floor(projectedBoardSizePx);
 
 		//square grids so we can just check the first array's length
@@ -103,45 +121,35 @@
 		layoutRefreshed = true;
 	}
 
-	function handlePointerMove(e: PointerEvent) {
-		if (dragging) {
-			let tilePos = Utils.getBoardPositionFromPointer(
-				boardOffsetPx,
-				board,
-				tileSizePx,
-				e.clientX,
-				e.clientY
-			);
+	function tryUpdateSelection(tilePos: Point2D | null) {
+		if (dragging && tilePos) {
+			if (previousPointerDragPos == undefined) {
+				// We start dragging on tiles
+				previousPointerDragPos = Object.assign({}, tilePos);
 
-			if (tilePos) {
-				if (previousPointerDragPos == undefined) {
-					// We start dragging on tiles
-					previousPointerDragPos = Object.assign({}, tilePos);
-
-					// Are we outside the current selection head?
-					let selPath = game.getCurrentSelection().getPath();
-					if (
-						selPath.length == 0 ||
-						tilePos.x != selPath[selPath.length - 1].x ||
-						tilePos.y != selPath[selPath.length - 1].y
-					) {
-						// We reset the selection
-						game.setSelection(new Selection([tilePos]));
-						onSelectionUpdated();
-					}
-				} else if (
-					(tilePos.x == previousPointerDragPos.x + 1 && tilePos.y == previousPointerDragPos.y) ||
-					(tilePos.x == previousPointerDragPos.x - 1 && tilePos.y == previousPointerDragPos.y) ||
-					(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y + 1) ||
-					(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y - 1)
+				// Are we outside the current selection head?
+				let selPath = game.getCurrentSelection().getPath();
+				if (
+					selPath.length == 0 ||
+					tilePos.x != selPath[selPath.length - 1].x ||
+					tilePos.y != selPath[selPath.length - 1].y
 				) {
-					let dir = Utils.GetDirection(previousPointerDragPos, tilePos);
-					if (dir) {
-						let selectionUpdated = game.updateSelection(dir, false);
-						if (selectionUpdated) {
-							previousPointerDragPos = Object.assign({}, tilePos);
-							onSelectionUpdated();
-						}
+					// We reset the selection
+					game.setSelection(new Selection([tilePos]));
+					onSelectionUpdated();
+				}
+			} else if (
+				(tilePos.x == previousPointerDragPos.x + 1 && tilePos.y == previousPointerDragPos.y) ||
+				(tilePos.x == previousPointerDragPos.x - 1 && tilePos.y == previousPointerDragPos.y) ||
+				(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y + 1) ||
+				(tilePos.x == previousPointerDragPos.x && tilePos.y == previousPointerDragPos.y - 1)
+			) {
+				let dir = Utils.GetDirection(previousPointerDragPos, tilePos);
+				if (dir) {
+					let selectionUpdated = game.updateSelection(dir, false);
+					if (selectionUpdated) {
+						previousPointerDragPos = Object.assign({}, tilePos);
+						onSelectionUpdated();
 					}
 				}
 			}
@@ -155,6 +163,8 @@
 				cannotDivideReason = 'Cannot divide by 0';
 			} else if (result.val == ReduceErrorReason.ResultIsDecimal) {
 				cannotDivideReason = 'Resulting number would be decimal';
+			} else if (result.val == ReduceErrorReason.InvalidSelection) {
+				cannotDivideReason = '';
 			}
 		} else {
 			cannotDivideReason = '';
@@ -165,8 +175,15 @@
 	}
 
 	function handlePointerDown(e: PointerEvent) {
+		const element = e.target as HTMLElement;
+		if (element) {
+			// Very important to make the on:pointerenter and leave work on mobile
+			// https://stackoverflow.com/a/57046105
+			element.releasePointerCapture(e.pointerId);
+		}
 		if (e.button == 0) {
 			dragging = true;
+			tryUpdateSelection($pointedTile);
 		}
 	}
 
@@ -181,7 +198,6 @@
 <svelte:window
 	on:keyup={handleKeyUp}
 	on:resize={refreshLayout}
-	on:pointermove={handlePointerMove}
 	on:pointerdown={handlePointerDown}
 	on:pointerup={handlePointerUp}
 />
@@ -189,24 +205,34 @@
 <main>
 	<h1 on:click={newRandomLevel}>REDUCE</h1>
 	{#if layoutRefreshed}
-		<GameBoard {boardOffsetPx} {board} {selection} {boardSizePx} {tileSizePx} />
-		<MathOperators {boardOffsetPx} {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
+		<GameBoard {board} {selection} {tileSizePx} />
+		<MathOperators {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
+		{#if levelCompleted}
+			<h2 class="success">Success!</h2>
+		{/if}
 	{/if}
 </main>
 
 <style>
 	main {
 		text-align: center;
-		padding: 1em;
 		touch-action: none;
 	}
 
 	h1 {
-		color: #ff3e00;
+		color: #475569;
+		font-family: serif;
 		text-transform: uppercase;
 		font-size: 3em;
 		font-weight: 100;
 		user-select: none;
+	}
+
+	.success {
+		color: #8ad17b;
+		font-family: serif;
+		font-size: 3em;
+		font-weight: 100;
 	}
 
 	h1:hover {

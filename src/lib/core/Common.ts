@@ -11,7 +11,7 @@ export interface Point2D {
 }
 
 export enum ReduceErrorReason {
-    InvalidSelection, // If it contains empty tiles
+    InvalidSelection, // If it contains empty tiles or empty selection
     DivideByZero,
     ResultIsDecimal
 }

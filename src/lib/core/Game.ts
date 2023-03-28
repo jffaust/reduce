@@ -104,6 +104,8 @@ export class Game {
     getReduceResult(op: Operation): Result<number, ReduceErrorReason> {
         let sel = this.getCurrentSelection().getPath();
 
+        if (sel.length == 0) return Err(ReduceErrorReason.InvalidSelection)
+
         let numbers: number[] = [];
         let board = this.getCurrentBoard();
 
@@ -136,11 +138,10 @@ export class Game {
         }
     }
 
-    // returns true if the board is cleared
     reduceSelection(op: Operation): Result<boolean, ReduceErrorReason> {
         let path = this.getCurrentSelection().getPath();
         if (this.BoardCleared) { return Ok(true); }
-        if (path.length < 1) { return Err(ReduceErrorReason.InvalidSelection) }
+        if (path.length == 0) { return Err(ReduceErrorReason.InvalidSelection) }
 
         let result = this.getReduceResult(op);
         if (result.ok) {

@@ -34,7 +34,7 @@
 	}
 	button {
 		background: rgb(201, 216, 196);
-		color: #64748b;
+		color: #475569;
 		border: unset;
 		border-radius: 50%;
 		cursor: pointer;
@@ -50,7 +50,7 @@
 
 	button.disabled {
 		cursor: not-allowed;
-		color: #64748b !important;
+		color: #475569 !important;
 		background: rgb(229, 137, 137) !important;
 	}
 </style>

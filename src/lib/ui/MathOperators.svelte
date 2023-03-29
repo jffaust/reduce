@@ -33,7 +33,7 @@
 		justify-content: space-around;
 	}
 	button {
-		background: #e5f0e2;
+		background: rgb(201, 216, 196);
 		color: #64748b;
 		border: unset;
 		border-radius: 50%;
@@ -45,12 +45,12 @@
 		color: #475569;
 	}
 	button:focus {
-		background: #8ad17b;
+		background: #8dc982;
 	}
 
 	button.disabled {
 		cursor: not-allowed;
 		color: #64748b !important;
-		background: lightcoral !important;
+		background: rgb(229, 137, 137) !important;
 	}
 </style>

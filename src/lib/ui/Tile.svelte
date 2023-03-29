@@ -94,7 +94,7 @@
 	td {
 		border: 2px solid #8c8e92;
 		user-select: none;
-		background: #e7f2e4;
+		background: #f2f1de;
 		color: #475569;
 		box-sizing: border-box;
 	}
@@ -107,7 +107,7 @@
 
 	.used {
 		cursor: default !important;
-		background-color: rgb(241, 241, 241) !important;
+		background-color: rgb(230, 230, 230) !important;
 		border-width: 1px;
 		border-color: lightgrey;
 		transition: background-color 0.5s ease;
@@ -117,7 +117,7 @@
 		transition: background-color 0.5s ease;
 	}
 	.selected.head {
-		background-color: #8ad17b !important;
+		background-color: #8dc982 !important;
 		transition: background-color 0.5s ease;
 	}
 

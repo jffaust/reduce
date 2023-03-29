@@ -208,7 +208,7 @@
 		<GameBoard {board} {selection} {tileSizePx} />
 		<MathOperators {boardSizePx} {handleMathOpClick} {cannotDivideReason} />
 		{#if levelCompleted}
-			<h2 class="success">Success!</h2>
+			<h2 class="success">Level completed!</h2>
 		{/if}
 	{/if}
 </main>
@@ -229,7 +229,7 @@
 	}
 
 	.success {
-		color: #8ad17b;
+		color: #86c17c;
 		font-family: serif;
 		font-size: 3em;
 		font-weight: 100;
